@@ -1,0 +1,16 @@
+html, body {
+    margin: 5px;
+    padding: 0;
+}
+
+.strikeout {
+    text-decoration: line-through;
+}
+
+.priority {
+    color: #DE751F;
+}
+
+.header {
+    color: #FF00FF;
+}
