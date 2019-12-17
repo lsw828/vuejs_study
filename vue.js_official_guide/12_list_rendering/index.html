@@ -1,0 +1,24 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <ul id="example-2">
+        <li v-for="(item, index) in items">
+          {{ parentMessage }} - {{ index }} - {{ item.message }}
+        </li>
+      </ul>
+
+      <ul id="v-for-object" class="demo">
+        <li v-for="(value, name, index) in object">
+          {{ index }}. {{ name }}: {{ value }}
+        </li>
+      </ul>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
