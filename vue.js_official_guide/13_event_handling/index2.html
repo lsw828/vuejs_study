@@ -1,0 +1,33 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- another method event handler example -->
+      <div>
+        <p>Event Handler</p>
+        <button v-on:click="greet">Greet</button>
+      </div>
+
+      <!-- inline method handler -->
+      <div>
+        <p>Inline Method Handler</p>
+        <button v-on:click="say('hi')">Say hi</button>
+        <button v-on:click="say('what')">Say what</button>
+      </div>
+
+      <!-- Access Native DOM Event -->
+      <div>
+        <p>Access Native DOM Event</p>
+        <button v-on:click="warn('Form cannot be submitted yet.', $event)">
+          Submit
+        </button>
+      </div>
+    </div>
+
+    <script src="index2.js"></script>
+  </body>
+</html>

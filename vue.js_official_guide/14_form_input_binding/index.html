@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <!-- single line string -->
+      <div>
+        <span>한 줄을 가지는 메시지:</span>
+        <input v-model="message" placeholder="여기를 수정해 보세요">
+        <p>메시지: {{ message }}</p>
+      </div>
+
+      <p>===========</p>
+
+      <div>
+        <span>여러 줄을 가지는 메시지:</span>
+          <p style="white-space: pre-line">{{ multi_message }}</p>
+          <br>
+          <textarea v-model="multi_message" placeholder="여러줄을 입력해보세요"></textarea>
+      </div>
+
+      <p>===========</p>
+
+      <div>
+        <input type="checkbox" id="checkbox" v-model="checked">
+        <label for="checkbox">{{ checked }}</label>
+      </div>
+
+      <p>===========</p>
+
+      <div>
+        <input type="checkbox" id="jack" value="Jack" v-model="checkedNames">
+        <label for="jack">Jack</label>
+        <input type="checkbox" id="john" value="John" v-model="checkedNames">
+        <label for="john">John</label>
+        <input type="checkbox" id="mike" value="Mike" v-model="checkedNames">
+        <label for="mike">Mike</label>
+        <br>
+        <span>체크한 이름: {{ checkedNames }}</span>
+      </div>
+
+      <p>===========</p>
+
+      <div>
+        <input type="radio" id="one" value="One" v-model="picked">
+        <label for="one">One</label>
+        <br>
+        <input type="radio" id="two" value="Two" v-model="picked">
+        <label for="tow">Two</label>
+        <br>
+        <span>선택: {{ picked }}</span>
+      </div>
+
+      <p>셀렉트 부터는 index2.html 로...</p>
+    </div>
+
+    <script src="index.js"></script>
+  </body>
+</html>
