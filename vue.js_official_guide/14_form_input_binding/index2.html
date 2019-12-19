@@ -1,0 +1,44 @@
+<html>
+  <head>
+    <link rel="stylesheet" href="index.css">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  </head>
+
+  <body>
+    <div id="app">
+      <select v-model="selected">
+        <option disabled value="">Please select one</option>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      <span> 선택함: {{ selected }}</span>
+
+      <br><p>===============</p><br>
+
+      <select v-model="selected_multi" multiple>
+        <option>A</option>
+        <option>B</option>
+        <option>C</option>
+      </select>
+      <br>
+      <span> 선택함: {{ selected_multi }}</span>
+
+      <br><p>===============</p><br>
+
+      <!-- 특이하다 ㅎㅎㅎ -->>
+
+      <select v-model="selected_v_for">
+        <option v-for="option in options" v-bind:value="option.value">
+          {{ option.text }}
+        </option>
+      </select>
+      <span> 선택함: {{ selected_v_for }}</span>
+
+
+    </div>
+
+
+    <script src="index2.js"></script>
+  </body>
+</html>
