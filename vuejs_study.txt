@@ -1,3 +1,21 @@
+"목표를 높게 잡아 실패하는 것은 문제가 아니다.
+ 목표를 낮게 잡아 이루는 것은 큰 문제다."
+ - 미켈란젤로
+
+"가능하다고 생각하든, 불가능하다고 생각하든
+ 당신은  옳다."
+- 헨리 포드
+
+"'그 정도면 괜찮아'는 괜찮은게 아닙니다. 더 좋을수 있었다면,
+ '좋다'는 괜찮은게 아닙니다. 최고가 될 수 있었다면"
+
+"You keep standing, No matter what you don't give up!"
+
+"How are you living? 어떻게 살 것인가?"
+
+https://www.youtube.com/watch?v=Xog9butPfZk
+
+
 # @vue/cli
 
 "개발 환경을 빠르게 세팅할 수 있도록 도와주는 툴"
@@ -40,13 +58,191 @@
     6) locale : en 
 
 
-# Component
+# Component - Vue 의 핵심
 
 - 컴포넌트 생성
+  @vue/cli 로 프로젝트 생성 후
+  src/components 폴더에 Parent.vue, Child.vue 가 존재할때...
 
-- 이벤트 주고 받기
-  1) parent -> child
-  2) child -> parent
-  3) child -> child
+  방법 1) local 등록
+    --- Parent.vue ---
+    <template>
+      <div>
+        <ChildComp></ChildComp>
+      </div>
+    </template>
 
-* 좋은 예제 : https://www.youtube.com/watch?v=G6rhxMuqnhU&list=PLZzSdj89sCN0sLqrTKf2m7lXe_93C19UG
+    <script>
+      import ChildComp from "./Child"
+      export default {
+        components: {
+          ChildComp
+        }
+      }
+    </script>
+
+  방법 2) global 등록
+    --- main.js ---
+    import ChildComp from "./components/Child"
+    Vue.component('AppChild', ChildComp)
+
+    --- Parent.vue ---
+    <template>
+      <div>
+        <AppChild></AppChild>
+      </div>
+    </template>
+
+- components 끼리 이벤트 주고 받기
+  src/components 폴더에 User.vue, UserDetail.vue, UserEdit.vue 가 존재
+  User          <- parent
+    UserDetail  <- child
+    UserEdit    <- child
+
+  기본적으로 아래와 같이 구성되어 있다.
+
+  --- App.vue ---
+  <script>
+    import User from "./components/User"
+
+    export default {
+      components: {
+        User
+      }
+    }
+  </script>
+
+  --- User.vue ---
+  <template>
+    <div>
+      <p>{{ name }}</p>
+      <button v-on:click="changeName() ">change name</button>
+
+      <UserDetail></UserDetail>
+      <UserEdit></UserEdit>
+    </div>
+  </template>
+
+  <script>
+    import UserDetail from "./UserDetail"
+    import UserEdit from "./UserEdit"
+
+    export default {
+      components: {
+        UserDetail,
+        UserEdit
+      },
+      data () {
+        return {
+          name: "anonymous"
+        }
+      },
+      methods: {
+        changeName() {
+          this.name = "HOHO"
+        }
+      }
+    }
+  </script>
+
+  1) parent -> child (v-bind, props)
+    User 에서 버튼 클릭으로 변경된 name 을 UserDetail 로 전달하기...
+
+    부모는 bind 로 값 전달
+    --- User.vue ---
+    <template>
+      <UserDetail v-bind:nameOfChild="name"></UserDetail>
+    </template>
+
+    자식은 props 로 해당 값을 받음
+    --- UserDetail.vue ---
+    <template>
+      <div>
+        <p>{{ nameOfChild }}</p>
+      </div>
+    </template>
+
+    <script>
+    export default {
+      props: ['nameOfChild']
+      또는 
+      props: {
+        nameOfChild: {
+          type: String,
+          required: true
+        }
+      } 
+    }
+    </script>
+
+  2) child -> parent ($emit)
+    --- UserEdit.vue ---
+    <template>
+      <div>
+        <v-text-field
+          label="Regular"
+          v-model="name"
+        ></v-text-field>
+        <button @click="changeUser">update user</button>
+      <div>
+    </template>
+
+    <script>
+    export default {
+      props: ['name', 'address', 'phone', 'hasDog'],
+      data () {
+        return {
+          user: {}
+        }
+      }
+      methods: {
+        changeUser () {
+          console.log(this.user)
+          this.$emit('child', this.user)
+        }
+      }
+    }
+    </script>
+
+    --- User.vue ---
+    <template>
+      <div>
+        <UserEdit 
+          :name="name"
+          :address="address"
+          :phone="phone"
+          :hasDog="hasDog"
+          @child="parents"
+        ></UserEdit>
+      <div>
+    </template>
+
+    <script>
+    export default {
+      data () {
+          return {
+            name="hoho",
+            address="seoul",
+            phone="1234-5678",
+            hasDog=true
+          }
+      },
+      methods: {
+        parents (user) {
+          console.log("OK, I received")
+          this.name = user.name
+        }
+      }
+    }
+    </script>
+
+  3) child -> child  (eventbus)
+
+
+
+
+
+
+
+
+
