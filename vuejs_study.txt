@@ -9,18 +9,20 @@
   버전 확인 : vue --version
 
 
-# Vue 프로젝트 생성
+# @vue/cli 로 프로젝트 생성
 
-- vue create <project name>
-  1) preset : Manually ...
-  2) features : Babel, Router, Vuex
-  3) history mode for router? : y
-  4) config : package.json
-  5) save preset : n
+- create
+  vue create <project name>
+    1) preset : Manually ...
+    2) features : Babel, Router, Vuex
+    3) history mode for router? : y
+    4) config : package.json
+    5) save preset : n
 - test
   cd <project name>
   npm run serve
   http://localhost:8080 접속
+  * 포트 변경은 package.json 파일의 serve 항목에 --port <number> 추가
 
 
 # Vue plugin (플러그인) 설치 : Vuetify
@@ -28,10 +30,23 @@
 "bootstrap 같은 건데, Vue에 특화된 거다. Vue 컴포넌트로 구성되어 있음"
 "해당 프로젝트로 가서 vue cli 를 이용해 vue plugin 으로 설치함"
 
-- vue add vuetify
-  1) pre-made template : y
-  2) custom theme : n
-  3) custom properties : n
-  4) select icon font : font awesome5
-  5) babel/polyfill : y   => IE11 지원
-  6) locale : en 
+- vuetify 추가
+  vue add vuetify
+    1) pre-made template : y
+    2) custom theme : n
+    3) custom properties : n
+    4) select icon font : font awesome5
+    5) babel/polyfill : y   => IE11 지원
+    6) locale : en 
+
+
+# Component
+
+- 컴포넌트 생성
+
+- 이벤트 주고 받기
+  1) parent -> child
+  2) child -> parent
+  3) child -> child
+
+* 좋은 예제 : https://www.youtube.com/watch?v=G6rhxMuqnhU&list=PLZzSdj89sCN0sLqrTKf2m7lXe_93C19UG
