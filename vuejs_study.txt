@@ -319,3 +319,39 @@ https://www.youtube.com/watch?v=Xog9butPfZk
         }
       }
     </script>
+
+
+# router
+
+* 인터넷 소스 코드는 "npm install" 명령으로 설치 후 실행한다.
+
+- @vue/cli 로 기본 create 후 router 옵션 선택
+  App.vue 파일에 아래 내용 추가
+  <router-view></router-view>
+  그럼 router.js 에 정의된 내용대로 "주소-페이지(vue)" 표시됨
+
+- 코드에 router 구현 방법
+  --- router.js ---
+  export default new Router({
+    mode: 'history',            # history mode (필수)
+    base: process.env.BASE_URL,
+    routes: [
+      {
+        path: '/',
+        name: 'home',
+        component: Home
+      },
+    ]
+  })
+
+  위 상황에서...
+  --- App.vue ---
+  다음 3 가지 방법으로 router 설정 가능
+  1) 단순 경로
+    <v-list-tile @click="$router.push('/')"> 또는
+  2) 객체
+    <v-list-tile @click="$router.push({name: 'home'})"> 또는 
+    <v-list-tile @click="$router.push({path: '/'})"> 
+    => 객체 형태로 전달 => 다른 파라미터도 전달 가능
+  3) router 키워드로 전달
+  <v-list-tile router :to="{name: 'home'}" exact>
