@@ -323,30 +323,35 @@ https://www.youtube.com/watch?v=Xog9butPfZk
 
 # router
 
-* 인터넷 소스 코드는 "npm install" 명령으로 설치 후 실행한다.
+* 관련 예제는 vue-router-self
+* 프로젝트에 package.json 파일이 존재하면 "npm install" 명령으로 설치 후 실행한다.
 
-- @vue/cli 로 기본 create 후 router 옵션 선택
-  App.vue 파일에 아래 내용 추가
+- router 프로젝트 생성
+  @vue/cli 로 기본 create 후 router 옵션 선택 -> router/index.js 파일 자동 생성됨
+
+  * 처음에 router 옵션 선택하지 않아도, 나중에 아래 명령으로 router 추가하면 됨
+    vue add router
+  
+- router 구조 세팅
+  --- router/index.js ---
+  1) import
+  import Home from '../views/Home.vue'
+
+  2) routes 배열에 추가 : [{path:, name:, component:}]
+  const routes = [
+    {
+      path: '/',
+      name: 'home',
+      component: Home
+    },
+  ]
+
+  3) App.vue 에 아래 태그로 router 표시할 위치 지정
   <router-view></router-view>
-  그럼 router.js 에 정의된 내용대로 "주소-페이지(vue)" 표시됨
 
-- 코드에 router 구현 방법
-  --- router.js ---
-  export default new Router({
-    mode: 'history',            # history mode (필수)
-    base: process.env.BASE_URL,
-    routes: [
-      {
-        path: '/',
-        name: 'home',
-        component: Home
-      },
-    ]
-  })
-
-  위 상황에서...
+- 코드에서 router 제어 : "$router" 사용
   --- App.vue ---
-  다음 3 가지 방법으로 router 설정 가능
+  다음 3 가지 방법으로 router 제어 가능
   1) 단순 경로
     <v-list-tile @click="$router.push('/')"> 또는
   2) 객체
@@ -354,4 +359,96 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     <v-list-tile @click="$router.push({path: '/'})"> 
     => 객체 형태로 전달 => 다른 파라미터도 전달 가능
   3) router 키워드로 전달
-  <v-list-tile router :to="{name: 'home'}" exact>
+    <router-link :to="{name: 'home'}" exact>
+      go to home
+    </router-link>
+    * vuetify 에서는...
+    <v-list-tile router :to="{name: 'home'}">
+
+- router 값 전달하기 : params
+  localhost:8080/users/123 형식으로 값(123)을 전달할때...
+  --- router/index.js ---
+  const routes = [
+    {
+      path: '/users/:uid',
+      name: 'users',
+      component: () => import(/* webpackChunkName: "users" */ '../views/Users.vue')
+    }
+  ]
+
+  이 값을 받아 사용하려면...
+  --- Users.vue ---
+  <template>
+  <div>
+    <h1>Users</h1>
+    <p>userId = {{ userId }}</p>
+  </div>
+  </template>
+
+  <script>
+  export default {
+    computed: {
+      userId() {
+          return this.$route.params.uid
+      }
+    }
+  }
+  </script>
+
+  * $router vs $route
+  간단하게 콘솔로 찍어서 inpection 으로 보면...
+  created: {
+    console.log("router", this.$router)
+    console.log("route", this.$route)
+  }
+
+  router : VueRouter  (진짜 VueRouter, router/index.js 에서 new VueRouter 명령으로 생성했음 )
+  route  : Object (router 로 넘어온 현재 페이지와 관련된 객체 )
+
+- App.vue 의 Navigation 메뉴에서도 params 를 입력해보자.
+  --- App.vue ---
+  아래처럼 객체로 전달하면, params 값을 주기도 편하다.
+  <v-list-item router :to="{name: 'users', params: {uid: 13579}}" exact>
+
+  * 근데 이렇게 명시적으로 params 를 직접 전달하면, router/index.js 에서 :uid 식으로 선언하지 않아도
+    해당 params 값을 정상적으로 받을 수 있다. 
+
+- router 값 전달하기 : query
+  웹 사이트 주소를 보면 아래와 같은 형식이 자주 보인다. 이처럼 사용하는 법에 대한 설명...
+  http://localhost:8080/users/13579?group=member&category=trial
+
+  query 설정
+  --- App.vue ---
+  <v-list-item router 
+  :to="{
+    name: 'users', 
+    params: {uid: 13579},
+    query: {
+      group: 'member',
+      category: 'trial'
+    }
+  }" exact>
+  
+  query 수신 설정 : $route.query 에 다 저장됨 -> 편하게 가져다 쓰면됨
+  --- Users.vue ---
+  <template>
+    <div>
+      <p>Group = {{ $route.query.group }}</p>
+      <p>Category = {{ $route.query.category }}</p>
+    </div>
+  </template>
+
+  * 주소창에 임의의 query 값을 넣어도, $route.query 에 모두 저장됨
+    -> 편하면서도 위험한데? ㅎ
+
+  * params vs query
+    params : 주소창에 안보임
+    query  : 주소창에 다 보임
+
+===>>> router : 하위 경로 설정하기 (child 속성) 할 차례...
+
+
+
+
+
+
