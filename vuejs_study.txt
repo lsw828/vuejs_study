@@ -454,7 +454,9 @@ https://www.youtube.com/watch?v=Xog9butPfZk
   vue create <project> 에서 'vuex' 옵션 선택
   -> src/store/index.js 파일 존재
 
-  먼저 선언하고...
+  먼저 선언한다.
+  mutations 함수의 첫번째 인자(state) 와 actions 함수의 첫번째 인자(context) 는 고정!
+  각각 state 로 state 멤버에 접근하고, context.commit() 으로 mutation 접근한다.
   --- store/index.js ---
   export default new Vuex.Store({
     state: {
