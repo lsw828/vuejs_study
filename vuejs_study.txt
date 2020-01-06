@@ -54,7 +54,7 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     3) custom properties : n
     4) select icon font : font awesome5
     5) babel/polyfill : y   => IE11 지원
-    6) locale : en 
+    6) locale : en
 
 
 # Component - Vue 의 핵심
@@ -165,19 +165,19 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     <script>
     export default {
       props: ['nameOfChild']
-      또는 
+      또는
       props: {
         nameOfChild: {
           type: String,
           required: true
         }
-      } 
+      }
     }
     </script>
 
   2) child -> parent ($emit -> @)
 
-    $emit() 호출 
+    $emit() 호출
     --- UserEdit.vue ---
     <template>
       <div>
@@ -211,7 +211,7 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     --- User.vue ---
     <template>
       <div>
-        <UserEdit 
+        <UserEdit
           :name="name"
           :address="address"
           :phone="phone"
@@ -331,7 +331,7 @@ https://www.youtube.com/watch?v=Xog9butPfZk
 
   * 처음에 router 옵션 선택하지 않아도, 나중에 아래 명령으로 router 추가하면 됨
     vue add router
-  
+
 - router 구조 세팅
   --- router/index.js ---
   1) import
@@ -355,8 +355,8 @@ https://www.youtube.com/watch?v=Xog9butPfZk
   1) 단순 경로
     <v-list-tile @click="$router.push('/')"> 또는
   2) 객체
-    <v-list-tile @click="$router.push({name: 'home'})"> 또는 
-    <v-list-tile @click="$router.push({path: '/'})"> 
+    <v-list-tile @click="$router.push({name: 'home'})"> 또는
+    <v-list-tile @click="$router.push({path: '/'})">
     => 객체 형태로 전달 => 다른 파라미터도 전달 가능
   3) router 키워드로 전달
     <router-link :to="{name: 'home'}" exact>
@@ -411,7 +411,7 @@ https://www.youtube.com/watch?v=Xog9butPfZk
   <v-list-item router :to="{name: 'users', params: {uid: 13579}}" exact>
 
   * 근데 이렇게 명시적으로 params 를 직접 전달하면, router/index.js 에서 :uid 식으로 선언하지 않아도
-    해당 params 값을 정상적으로 받을 수 있다. 
+    해당 params 값을 정상적으로 받을 수 있다.
 
 - router 값 전달하기 : query
   웹 사이트 주소를 보면 아래와 같은 형식이 자주 보인다. 이처럼 사용하는 법에 대한 설명...
@@ -419,16 +419,16 @@ https://www.youtube.com/watch?v=Xog9butPfZk
 
   query 설정
   --- App.vue ---
-  <v-list-item router 
+  <v-list-item router
   :to="{
-    name: 'users', 
+    name: 'users',
     params: {uid: 13579},
     query: {
       group: 'member',
       category: 'trial'
     }
   }" exact>
-  
+
   query 수신 설정 : $route.query 에 다 저장됨 -> 편하게 가져다 쓰면됨
   --- Users.vue ---
   <template>
@@ -445,10 +445,95 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     params : 주소창에 안보임
     query  : 주소창에 다 보임
 
-===>>> router : 하위 경로 설정하기 (child 속성) 할 차례...
 
+# vuex
+- 중앙 저장소 개념, 너무 편리하다.
+- 개념 완벽 이해 예제 : https://itnext.io/vuex-made-simple-getting-started-6bf229d432cf
 
+- 간단 사용법
+  vue create <project> 에서 'vuex' 옵션 선택
+  -> src/store/index.js 파일 존재
 
+  먼저 선언하고...
+  --- store/index.js ---
+  export default new Vuex.Store({
+    state: {
+      totalTvCount: 10,
+      isLarryHappy: true,
+      isJennyHappy: true
+    },
+    getters: {
+      happyStaff: state => {
+        return state.isLarryHappy && state.isJennyHappy
+      }
+    },
+    mutations: {
+      removeTv(state, amount) {
+        state.totalTvCount -= amount
+      }
+    },
+    actions: {
+      removeTv(context, amount) {
+        if(context.state.totalTvCount >= amount) {
+          context.commit('removeTv', amount)
+        }
+      }
+    },
+    modules: {
+    }
+  })
 
+  원하는 컴포넌트에서 불러 쓴다.
+  script 태그에서 import, computed/methods, ...mapState/mapGetters/mapActions 확인 (this 필요)
+  template 태그에서 local data 처럼 사용가능 (this 필요없음)
+  --- Customer.vue ---
+  <template>
+  <div class="customer">
+    <h1>I'm a customer</h1>
+    <p>I see {{ totalTvCount }} TVs!</p>
+    <p v-show="happyStaff">The staff seems happy!</p>
+    <p v-show="!totalTvCount">I can't buy any...</p>
+    <button
+        :disabled="!totalTvCount"
+        @click="buyTv">
+        Buy TV
+    </button>
+    <button
+        :disabled="totalTvCount < 2"
+        @click="buyTwoTvs">
+        Buy Two TVs
+    </button>
+  </div>
+  </template>
 
+  <script>
+  // object spread operators
+  import { mapState, mapGetters, mapActions } from 'vuex'
 
+  export default {
+    name: "Customer",
+    computed: {
+      // simple version
+      //totalTvCount() { return this.$store.state.totalTvCount },
+      //happyStaff() { return this.$store.getters.happyStaff }
+      ...mapState(['totalTvCount']),
+      ...mapGetters(['happyStaff'])
+    },
+    methods: {
+      ...mapActions(['removeTv']),
+      buyTv() {
+        // simple version
+        //this.$store.dispatch('removeTv', 1)
+        this.removeTv(1)
+      },
+      buyTwoTvs() {
+        // simple version
+        //this.$store.dispatch('removeTv', 2)
+        this.removeTv(2)
+      }
+    }
+  }
+  </script>
+
+  <style scoped>
+  </style>
