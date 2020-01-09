@@ -539,3 +539,91 @@ https://www.youtube.com/watch?v=Xog9butPfZk
 
   <style scoped>
   </style>
+
+
+
+# Axios
+
+- 설치
+  @vue/cli 로 프로젝트 생성
+  해당 폴더로 이동
+  아래 명령어 실행 (--save 를 붙여야 package.json 파일에 포함됨)
+  npm install axios --save
+
+* 유용한 웹사이트
+  1) reqres.in
+     fake server - RESTful API 테스트용 웹사이트
+                   인터넷에 fake server 가 많은가봐...
+  2) getpostman.com
+     API 테스트용 앱 (매우 훌륭하다!)
+     웹 프론트엔드, 백엔드 개발 시 테스트 목적으로 최고!
+
+- axios get/post 테스트
+  : 공식 웹사이트에 설명이 잘 되어 있다.  https://github.com/axios/axios
+    => 몇 가지 사용법이 있으니 잘 숙지 할 것. (sync/async)
+    => 실전에서는 내용이 살짝 다를 수 있는데, 아래 예제 코드와 비교하면 쉽게 적용 가능하다.
+
+  import axios 주목
+  axios.get() 호출 이후 .then, .catch, .finally 에서 arrow function 사용하는 부분 주목
+    => arrow function 을 사용해야 data 멤버에 this. 로 접근 가능!
+
+  --- Login.vue ---
+  <template>
+    <v-btn @click="getTest">get TEST</v-btn>
+    <v-btn @click="postTest">post TEST</v-btn>
+  </template>
+
+  <script>
+  import axios from "axios"
+
+  export default {
+    name: "login",
+    data () {
+    },
+    methods: {
+      getTest() {
+        axios.get('https://reqres.in/api/users?page=2')
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally( () => {
+          })
+      },
+      postTest() {
+        axios.post('https://reqres.in/api/register', {
+            "email": "eve.holt@reqres.in",
+            "password": "pistol"
+          })
+          .then(res => {
+            console.log(res)
+          })
+          .catch(err => {
+            console.log(err)
+          })
+          .finally( () => {
+          })
+      }
+    }
+  }
+  </script>
+
+
+- 새로고침 했을 때 로그인창 뜨지 않도록 token 을 localStorage 에 저
+* local storage 에 로그인 token 저장/불러오기 기법 사용
+  -> localStorage.setItem('key_name': value)
+  -> value = localStorage.getItem('key_name')
+
+
+  --- main.js ---
+  new Vue({
+    router,
+    store,
+    vuetify,
+    beforeCreate() {
+      this.$store.dispatch('getMemberInfo')
+    },
+    render: h => h(App)
+  }).$mount("#app");
