@@ -627,3 +627,69 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     },
     render: h => h(App)
   }).$mount("#app");
+
+
+*** Lorem Picsum : The Lorem Ipsum for photos
+  => https://picsum.photos/
+
+  * "Free Placeholder images" 로 검색하면 꽤 많이 나온다.
+    picsum 서버가 불안정하면 다른 사이트로 가면 된다.
+
+  와~ 진짜 짱이다~ ^^
+
+  full size 와 원하는 size 가 제공된다.
+
+  - random image (200*300)
+    https://picsum.photos/200/300
+
+  - square image (200*200)
+    https://picsum.photos/200
+
+  - specific image (id=237, 200*300)
+    https://picsum.photos/id/237/200/300
+
+  - specific image & size
+    https://picsum.photos/500/300?image=345
+    https://i.picsum.photos/id/345/500/300.jpg
+
+  - grayscale, blur, paging, image detail
+
+
+### 동적으로 이미지를 변화시킬때 사용하는 기법
+
+아래 코드에서 <v-img> 태그를 눈여겨 볼것...
+  :src, :lazy-src
+  "`https://
+
+<v-img
+:src="`https://picsum.photos/200/150?image=${pic_id}`"
+:lazy-src="`https://picsum.photos/20/15?image=${pic_id}`"
+
+--- picCard.vue ---
+<template>
+  <div>
+    <v-row align="center" justify="center">
+      <v-img
+        :src="`https://picsum.photos/200/150?image=${pic_id}`"
+        :lazy-src="`https://picsum.photos/20/15?image=${pic_id}`"
+        class="grey lighten-2"
+        max-width="160"
+        max-height="120"
+      >
+        <template v-slot:placeholder>
+          <v-row
+            class="fill-height ma-0"
+            align="center"
+            justify="center"
+          >
+            <v-progress-circular indeterminate color="grey lighten-5"></v-progress-circular>
+          </v-row>
+        </template>
+      </v-img>
+    </v-row>
+    {{ pic_id }}
+  </div>
+</template>
+
+
+
