@@ -692,4 +692,15 @@ https://www.youtube.com/watch?v=Xog9butPfZk
 </template>
 
 
+### random 함수
+  function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1) + min);
+  }
+
+
+### 프로젝트 마무리...
+- 항상 front 카드는 최대 2장 열리는 걸로...
+  => OK
+
+- 이미지 랜덤
 

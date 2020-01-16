@@ -7,10 +7,13 @@ export default new Vuex.Store({
   state: {
     cardObjArr: [],
     tryCount: 0,
-    prevCardObj: null
   },
   // 간단한 설정 하나 바꾸는데, 꼭 actions -> mutations 순서로 거쳐가야 하나?
   mutations: {
+    init(state) {
+      self.cardObjArr = []
+      self.tryCount = 0
+    },
     addCard(state, cardObj) {
       state.cardObjArr.push(cardObj)
     },
@@ -20,6 +23,8 @@ export default new Vuex.Store({
   },
   actions: {
     initCards(context) {
+      context.commit('init')
+
       // 예외 처리...
       if (context.state.cardObjArr.length >= 12) {
         console.log("-> context.state.cardObjArr.length >= 12 -> return")
@@ -49,31 +54,6 @@ export default new Vuex.Store({
       }
     },
     actionClick(context, cardObj) {
-      // 점수 계산
-      console.log("[store/index.js] actions: actionClick()", cardObj.pic_id, cardObj.isCover)
-      
-      // if(context.state.prevCardObj === null) {
-      //   context.state.prevCardObj = { ...cardObj }
-      // } else {
-      //   if(context.state.prevCardObj.id === cardObj.id) {
-      //     context.state.prevCardObj = null
-      //   } else {
-      //     if(context.state.prevCardObj.pic_id === cardObj.pic_id) {
-      //       // make two card done
-      //       context.state.prevCardObj.isDone = true
-      //       cardObj.isDone = true
-      //     } else {
-      //       // set prev card -> null
-      //       context.state.prevCardObj = null
-            
-      //       // two cards -> back
-      //       context.state.prevCardObj.isCover = true
-      //       cardObj.isCover = true
-
-      //     }
-      //   }
-      // }
-
       context.state.tryCount++
     },
   },

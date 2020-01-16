@@ -59,72 +59,29 @@ export default {
       if(this.cardObj.isDone) {
         return
       }
-      
-      this.cardObj.isCover = !this.cardObj.isCover
-
-      this.flipCard()
 
       this.actionClick(this.cardObj)
 
-      var open_card_index = 0
-      var open_card = [{id:-1, pic_id:-1}, {id:-1, pic_id:-1}]
-      // front card 개수가 0, 1, 2
-      // isDone === false && isCover === true
-      var i = 0
-      for(i = 0; i < this.cardObjArr.length; i++) {
-        var card = this.cardObjArr[i]
-        if( (card.isDone === false) && (card.isCover === false) ) {
-          open_card[open_card_index]['id'] = card['id']
-          open_card[open_card_index]['pic_id'] = card['pic_id']
-          open_card_index++
+      var frontCardCnt = this.getFrontCardCount()
+      console.log("frontCardCnt = ", frontCardCnt)
 
-          if( open_card_index === 2 ) {
-            break
+      if (frontCardCnt === 0) {
+        this.cardObj.isCover = !this.cardObj.isCover
+        this.flipCard()
+      } else if (frontCardCnt === 1) {
+        this.cardObj.isCover = !this.cardObj.isCover
+        this.flipCard()
+        
+        if( this.isMatched() ) {
+          if( this.isGameFinish() ) {
+            alert("Congratulation!", this.tryCount)
           }
         }
-      }
+      } else if (frontCardCnt === 2) {
+        eventBus.$emit("allCardsBack")
 
-      console.log(open_card_index)
-      console.log(open_card)
-
-      // 2 카드가 앞면이면... 
-      if( (open_card[0]['pic_id'] !== -1) && (open_card[1]['pic_id'] !== -1) ) {
-        // 2 카드가 맞으면
-        if( open_card[0]['pic_id'] === open_card[1]['pic_id'] ) {
-          for(i = 0; i < 2; i++) {
-            var id = open_card[i]['id']
-            //this.cardObjArr[id]['isDone'] = true
-            var j = 0
-            for(j = 0; j < this.cardObjArr.length; j++) {
-              var card = this.cardObjArr[j]
-              if( card.id === id ) {
-                card.isDone = true
-              }
-            }
-          }
-        } else {
-          const sleep = (milliseconds) => {
-           return new Promise(resolve => setTimeout(resolve, milliseconds))
-          }
-
-          sleep(1500).then(() => {
-            // [SENDER] temporary test code
-            console.log("eventBus.$emit('allCardsBack')")
-            eventBus.$emit("allCardsBack")
-          })
-        }
-      }
-
-      // all cards => isDone === true  => alert "Congratulation!"
-      for(i = 0; i < this.cardObjArr.length; i++) {
-        var card = this.cardObjArr[i]
-        if( card.isDone === false ) {
-          break
-        }
-      }
-
-      if( i === this.cardObjArr.length ) {
-        alert("Congratulation!", this.tryCount)
+        this.cardObj.isCover = !this.cardObj.isCover
+        this.flipCard()
       }
     },
     flipCard() {
@@ -141,6 +98,52 @@ export default {
     backCard() {
       this.srcUrl = this.coverImgUrl
       this.lazySrcUrl = this.coverImgUrl
+    },
+    getFrontCardCount() {
+      var count = 0
+      for(var i = 0; i < this.cardObjArr.length; i++) {
+        var card = this.cardObjArr[i]
+        if( !card.isDone && !card.isCover ) {
+          count++
+        }
+      }
+      return count
+    },
+    isGameFinish() {
+      for(var i = 0; i < this.cardObjArr.length; i++) {
+        var card = this.cardObjArr[i]
+        if( card.isDone === false ) {
+          break
+        }
+      }
+      return ( i === this.cardObjArr.length )
+    },
+    isMatched() {
+      var i = 0, j = 0
+      var idx = [ -1, -1 ]
+      for(i = 0; i < this.cardObjArr.length; i++) {
+        var card = this.cardObjArr[i]
+        if( !card.isDone && !card.isCover ) {
+          idx[j++] = i
+          if( j == 2 ) {
+            break
+          }
+        }
+      }
+
+      if( (idx[0] === -1) || (idx[1] === -1) ) {
+        return false
+      }
+
+      if( this.cardObjArr[idx[0]].pic_id === this.cardObjArr[idx[1]].pic_id ) {
+        console.log("two cards are matched!", idx[0])
+        this.cardObjArr[idx[0]].isDone = true
+        this.cardObjArr[idx[1]].isDone = true
+
+        return true
+      }
+
+      return false
     }
   },
 }
