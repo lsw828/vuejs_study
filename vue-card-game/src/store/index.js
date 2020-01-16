@@ -31,13 +31,6 @@ export default new Vuex.Store({
         return 
       }
       
-      /*
-      var pic_ids = [
-        441, 478, 249, 265, 299, 646,
-        441, 478, 249, 265, 299, 646,
-      ]
-      */
-
       var pic_ids = []
       for( var i = 0; i < 6; i++) {
         var max = 1000, min = 1
@@ -45,15 +38,13 @@ export default new Vuex.Store({
         pic_ids.push(num)
         pic_ids.push(num)
       }
-      console.log(pic_ids)
-
 
       var i = 0
       for (i = 0; i < pic_ids.length; i++) {
         var cardObj = {}
         cardObj["id"] = i
         cardObj["pic_id"] = pic_ids[i]
-        cardObj["isCover"] = true
+        cardObj["isCover"] = false
         cardObj["isDone"] = false
 
         context.commit('addCard', cardObj)
@@ -68,10 +59,5 @@ export default new Vuex.Store({
     actionClick(context, cardObj) {
       context.state.tryCount++
     },
-  },
-  methods: {
-    getRandomInt(min, max) {
-      return Math.floor(Math.random() * (max - min + 1) + min);
-    }  
   }
 })

@@ -20,7 +20,6 @@
         </template>
       </v-img>
     </v-row>
-    <!-- {{ cardObj.pic_id }} -->
   </div>
 </template>
 

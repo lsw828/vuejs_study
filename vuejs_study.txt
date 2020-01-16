@@ -697,11 +697,10 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 
-
-### 프로젝트 마무리...
-- 항상 front 카드는 최대 2장 열리는 걸로...
-  => OK
-
-- 이미지 랜덤
-  => OK
-
+### sleep 함수
+    const sleep = (milliseconds) => {
+      return new Promise(resolve => setTimeout(resolve, milliseconds))
+    }
+    sleep(500).then(() => {
+      alert("Congratulation!", this.tryCount)
+    })

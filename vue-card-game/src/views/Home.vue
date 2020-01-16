@@ -25,10 +25,8 @@
 
     <div class="ma-2">
       <v-btn rounded color="primary" dark 
-        @click="shuffle">Shuffle</v-btn>
+        @click="startGame">Game Start</v-btn>
       try = {{ tryCount }}
-      <v-btn rounded color="primary" dark 
-        @click="myTest">test</v-btn>
     </div>
   </div>
 </template>
@@ -36,6 +34,7 @@
 <script>
 import picCard from "@/components/picCard"
 import { mapState, mapActions } from 'vuex'
+import { eventBus } from "@/main"
 
 export default {
   name: 'home',
@@ -48,20 +47,14 @@ export default {
   methods : {
     ...mapActions(['initCards', 'shuffleCards']),
 
-    shuffle() {
+    startGame() {
+      eventBus.$emit("allCardsBack")
+
       this.shuffleCards()
     },
-    myTest() {
-      var i = 0
-      for(i = 0; i<this.cardObjArr.lengthj; i++) {
-        this.cardObjArr[i].isCover = true 
-      }
-    }
   },
   created() {
     this.initCards()
-
-    this.shuffleCards()
   }
 }
 </script>
