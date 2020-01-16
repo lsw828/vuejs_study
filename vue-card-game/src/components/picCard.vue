@@ -20,7 +20,7 @@
         </template>
       </v-img>
     </v-row>
-    {{ cardObj.pic_id }}
+    <!-- {{ cardObj.pic_id }} -->
   </div>
 </template>
 
@@ -74,7 +74,12 @@ export default {
         
         if( this.isMatched() ) {
           if( this.isGameFinish() ) {
-            alert("Congratulation!", this.tryCount)
+            const sleep = (milliseconds) => {
+              return new Promise(resolve => setTimeout(resolve, milliseconds))
+            }
+            sleep(500).then(() => {
+              alert("Congratulation!", this.tryCount)
+            })
           }
         }
       } else if (frontCardCnt === 2) {

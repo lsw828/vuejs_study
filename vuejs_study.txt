@@ -703,4 +703,5 @@ https://www.youtube.com/watch?v=Xog9butPfZk
   => OK
 
 - 이미지 랜덤
+  => OK
 
