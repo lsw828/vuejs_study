@@ -704,3 +704,25 @@ https://www.youtube.com/watch?v=Xog9butPfZk
     sleep(500).then(() => {
       alert("Congratulation!", this.tryCount)
     })
+
+
+### vue : javascript 코드에서 local image 불러오기 => image 를 동적 변경
+    -> requre() 필요...
+    -> '@' 이가 아닌 상대/절대 경로 사용
+    -> 예제 : "vue-card-game"
+
+<template>
+  <div>
+    <v-img :src="image1"> </v-img>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      image1: require("../assets/logo.png"),
+      image2: "https://picsum.photos/200/120?image=10"
+    }
+  }
+}
