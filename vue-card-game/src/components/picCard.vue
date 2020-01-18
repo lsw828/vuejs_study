@@ -35,7 +35,8 @@ export default {
   },
   data() {
     return {
-      coverImgUrl: "https://pds.joins.com/news/component/htmlphoto_mmdata/201911/19/ce877ed2-0800-457f-b9a6-a86044718d40.jpg",
+      coverImgUrl: require("../assets/peng-ha.jpg"),
+      cardImgUrl: require("../assets/card_img_"+this.cardObj.pic_id+".jpg"),
       srcUrl: null,
       lazySrcUrl: null,
     }
@@ -43,7 +44,6 @@ export default {
   created() {
     this.flipCard()
 
-    // [RECEIVER] temporary test code
     eventBus.$on('allCardsBack', () => {
       if(!this.cardObj.isDone) {
         this.cardObj.isCover = true
@@ -96,8 +96,8 @@ export default {
       }
     },
     frontCard() {
-      this.srcUrl = "https://picsum.photos/200/120?image=" + this.cardObj.pic_id
-      this.lazySrcUrl = "https://picsum.photos/20/12?image=" + this.cardObj.pic_id
+      this.srcUrl = this.cardImgUrl
+      this.lazySrcUrl = this.cardImgUrl
     },
     backCard() {
       this.srcUrl = this.coverImgUrl
@@ -143,10 +143,8 @@ export default {
         console.log("two cards are matched!", idx[0])
         this.cardObjArr[idx[0]].isDone = true
         this.cardObjArr[idx[1]].isDone = true
-
         return true
       }
-
       return false
     }
   },

@@ -33,7 +33,7 @@ export default new Vuex.Store({
       
       var pic_ids = []
       for( var i = 0; i < 6; i++) {
-        var max = 1000, min = 1
+        var max = 300, min = 1
         var num = Math.floor(Math.random() * (max - min + 1) + min)
         pic_ids.push(num)
         pic_ids.push(num)
