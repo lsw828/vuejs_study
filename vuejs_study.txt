@@ -457,6 +457,11 @@ https://www.youtube.com/watch?v=Xog9butPfZk
   먼저 선언한다.
   mutations 함수의 첫번째 인자(state) 와 actions 함수의 첫번째 인자(context) 는 고정!
   각각 state 로 state 멤버에 접근하고, context.commit() 으로 mutation 접근한다.
+  -> mutation 을 호출할때는 반드시 commit() 으로 호출한다.
+
+  * mutation 개념 = setter 개념
+  * mutation(동기) vs actions(비동기:RESTApi 등)
+
   --- store/index.js ---
   export default new Vuex.Store({
     state: {
@@ -611,7 +616,15 @@ https://www.youtube.com/watch?v=Xog9butPfZk
   </script>
 
 
-- 새로고침 했을 때 로그인창 뜨지 않도록 token 을 localStorage 에 저
+  *** CORS (Cross-Origin Resource Sharing) 이슈가 발생한다!
+
+  -> 해결방법...
+  https://wanago.io/2018/11/05/cors-cross-origin-resource-sharing/
+
+  (https 면 괜찮나?)
+
+
+- 새로고침 했을 때 로그인창 뜨지 않도록 token 을 localStorage 에 저장
 * local storage 에 로그인 token 저장/불러오기 기법 사용
   -> localStorage.setItem('key_name': value)
   -> value = localStorage.getItem('key_name')
